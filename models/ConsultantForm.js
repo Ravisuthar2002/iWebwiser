@@ -1,50 +1,37 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-
-const Footer = sequelize.define('Footer', {
+const ConsultanForm = sequelize.define('ConsultanForm', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
     },
-    title: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    footerlinks: {
-        type: DataTypes.JSON,
+    email: {
+        type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: []
+        unique: true
     },
-    socialMedia: {
-        type: DataTypes.JSON,
+    phone_number: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: []
+        unique: true
     },
-    logos: {
-        type: DataTypes.JSON,
-        allowNull: false,
-        defaultValue: []
-    },
-    branches: {
-        type: DataTypes.JSON,
-        allowNull: false,
-        defaultValue: []
-    },
-    section: {
+    company: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    page: {
+    message: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 }, {
     timestamps: true,
     paranoid: true
 });
 
-
-module.exports = Footer;
-
+module.exports = ConsultanForm;

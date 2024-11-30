@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../models/userModel');
 const sendMail = require('../helper/sendMail');
-const responseGenerator = require('../helper/functions.helper');
+const { responseGenerator } = require('../helper/functions.helper');
 const { vars } = require('../server/constants');
 const { statusCodeVars } = require('../server/statusCode');
 const { dataNotExist } = require('../helper/check_existence.helper');
@@ -21,7 +21,6 @@ exports.register = async (req, res, next) => {
         next(error);
     }
 },
-
 
     exports.login = async (req, res, next) => {
         const { username, email, password } = req.body;

@@ -3,11 +3,15 @@ const cors = require('cors')
 const app = express()
 const db = require('./models/index')
 const adminRoutes = require('./routes/adminRoutes');
-const contentRoutes = require('./routes/contentRoutes')
-const footerRouter = require('./routes/footerRoutes');
 const navbarRoutes = require('./routes/navbarRoutes');
+const footerRouter = require('./routes/footerRoutes');
+const contentRoutes = require('./routes/contentRoutes');
+const consultanRoutes = require('./routes/consultanRoutes');
+const ourValuesRouter = require('./routes/ourValuesRouter');
 const headerContentRoutes = require('./routes/headerContentRoutes');
+const challengeAndImpactRouters = require('./routes/challengeAndImpactRouter');
 const redis = require('redis');
+// const { responseGenerator } = require('./helper/functions.helper');
 const client = redis.createClient();
 
 client.on('error', (err) => {
@@ -16,46 +20,34 @@ client.on('error', (err) => {
 
 client.connect();
 
-
-
 app.use(express.json());
+app.use('/imageuploads', express.static('uploads'));
 app.use(cors())
+
 
 const PORT = process.env.PORT || 8001;
 
-app.use('/admin', adminRoutes);
+app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/headercontent', headerContentRoutes);
+app.use('/api/v1/content', contentRoutes);
+app.use('/api/v1/challengeAndImpact', challengeAndImpactRouters);
+app.use('/api/v1/consultanform', consultanRoutes);
+app.use('/api/v1/ourvalues', ourValuesRouter);
+app.use('/api/v1/navbar', navbarRoutes);
+app.use('/api/v1/footer', footerRouter);
 
-app.use('/header-content', headerContentRoutes);
 
-app.use('/content', contentRoutes);
-
-
-app.use('/navbar', navbarRoutes);
-app.use('/footer', footerRouter);
-
-app.get('/', (req, res) => {
-    res.json("hello")
+app.get('/', (req,res)=>{
+    res.send('Hello World!')
 })
 
-
-// app.post('/api/submit-form', async (req, res) => {
-//     const { firstName, lastName, email, message } = req.body;
-
-//     try {
-//       const connection = await pool.getConnection();
-
-//       const query = 'INSERT INTO form_submissions (first_name, last_name, email, message) VALUES (?, ?, ?, ?)';
-//       const values = [firstName, lastName, email, message];
-
-//       await connection.execute(query, values);
-//       connection.release();
-
-//       res.status(201).json({ message: 'Form submitted successfully' });
-//     } catch (error) {
-//       console.error('Error submitting form:', error);
-//       res.status(500).json({ error: 'An error occurred while submitting the form' });
-//     }
-//   });
+app.use((error, req, res, next) => {
+    const statusCode = error.statusCode || 500;
+    console.log(error);
+    return res.status(statusCode).json({ message: error.message, statusCode: statusCode });
+    // return responseGenerator(res, err, message, statusCode, false)
+    // return responseGen(res, error.message, statusCode);
+});
 
 db.sequelize.authenticate()
     .then(() => console.log(''))
@@ -64,11 +56,6 @@ db.sequelize.authenticate()
 app.listen(PORT, () => {
     console.log(`server running way........ ${PORT}`);
 })
-
-
-
-
-
 
 // const navabar = {
 //     id: 1,
@@ -290,102 +277,102 @@ app.listen(PORT, () => {
 //     sectionId: 2
 // }
 
-let headerContent = {
-    title: "",
-    subtitle: "",
-    navigation_menu: [
-        {
-            id: 1,
-            title: 'Healthcare',
-            href: '/company/design_development',
-            image: '/images/team.png',
-        },
-        {
-            id: 2,
-            title: 'Education',
-            href: '/company/design_development',
-            image: '/images/team.png',
-        },
-        {
-            id: 3,
-            title: 'E-commerce',
-            href: '/company/ecommerce',
-            image: '/images/team.png',
-        },
-        {
-            id: 4,
-            title: 'Real-estate',
-            href: '/company/real_estate',
-            image: '/images/team.png',
-        },
-    ],
-    logoId: [
-        {
-            id: 1,
-            label: "",
-            href: ""
-        },
-        {
-            id: 2,
-            label: "",
-            href: ""
-        }
-    ],
-    text: "",
-    body: "",
-    label: "",
-    href: ""
-}
+// let headerContent = {
+//     title: "",
+//     subtitle: "",
+//     navigation_menu: [
+//         {
+//             id: 1,
+//             title: 'Healthcare',
+//             href: '/company/design_development',
+//             image: '/images/team.png',
+//         },
+//         {
+//             id: 2,
+//             title: 'Education',
+//             href: '/company/design_development',
+//             image: '/images/team.png',
+//         },
+//         {
+//             id: 3,
+//             title: 'E-commerce',
+//             href: '/company/ecommerce',
+//             image: '/images/team.png',
+//         },
+//         {
+//             id: 4,
+//             title: 'Real-estate',
+//             href: '/company/real_estate',
+//             image: '/images/team.png',
+//         },
+//     ],
+//     logoId: [
+//         {
+//             id: 1,
+//             label: "",
+//             href: ""
+//         },
+//         {
+//             id: 2,
+//             label: "",
+//             href: ""
+//         }
+//     ],
+//     text: "",
+//     body: "",
+//     label: "",
+//     href: ""
+// }
 
-let footer = {
-    title: "@ Copyright iWebwiser 2023",
-    footerlinks: [
-        { title: "About us ", href: "/about_us" },
-        { title: "Career ", href: "/career" },
-        { title: "Success story ", href: "/success_story" },
-        { title: "Privacy policay", href: "/privacy_policay" },
-        { title: "Terms of use", href: "/terms_use" },
-        // add more footerLinks...........
-    ],
-    socialMedia: [
-        {
-            title: "socialMedia",
-            companiesLogo: [
-                { logo: "Teach Behemoths", href: "/teach_behemoths" }
-                // add more companiesLogo .....
-            ],
-            media: [
-                { title: "Linkedin", href: "/linkedin", logo: "Linkedin" },
-                { title: "Instargram", href: "/Instargram", logo: "Instargram" },
-                { title: "Facebook", href: "/facebook", logo: "Facebook" },
-                { title: "Twitter", href: "/twitter", logo: "Twitter" },
-                { title: "Dribole", href: "/dribole", logo: "Dribole" },
-                // add more media .. 
-            ]
-        }
-    ],
-    branches: [
-        {
-            title: "Globle branches",
-            branche: [
-                { name: "iWebwiser", address: "Usa", status: "Active" },
-                { name: "Appwise", address: "Usa", status: "Active" },
-                { name: "NewWay", address: "Usa", status: "Active" },
-                { name: "iWebwiser", address: "Usa", status: "Active" },
-                // add more branche ....... 
-            ]
-        },
-        {
-            title: "India branches",
-            branch: [
-                { name: "iWebwiser", address: "Usa", status: "Active" },
-                { name: "Appwise", address: "Usa", status: "Active" },
-                { name: "NewWay", address: "Usa", status: "Active" },
-                { name: "iWebwiser", address: "Usa", status: "Active" },
-                // add more branche ....... 
-            ]
-        }
-        // add more braches ......... 
-    ]
-}
+// let footer = {
+//     title: "@ Copyright iWebwiser 2023",
+//     footerlinks: [
+//         { title: "About us ", href: "/about_us" },
+//         { title: "Career ", href: "/career" },
+//         { title: "Success story ", href: "/success_story" },
+//         { title: "Privacy policay", href: "/privacy_policay" },
+//         { title: "Terms of use", href: "/terms_use" },
+//         // add more footerLinks...........
+//     ],
+//     socialMedia: [
+//         {
+//             title: "socialMedia",
+//             companiesLogo: [
+//                 { logo: "Teach Behemoths", href: "/teach_behemoths" }
+//                 // add more companiesLogo .....
+//             ],
+//             media: [
+//                 { title: "Linkedin", href: "/linkedin", logo: "Linkedin" },
+//                 { title: "Instargram", href: "/Instargram", logo: "Instargram" },
+//                 { title: "Facebook", href: "/facebook", logo: "Facebook" },
+//                 { title: "Twitter", href: "/twitter", logo: "Twitter" },
+//                 { title: "Dribole", href: "/dribole", logo: "Dribole" },
+//                 // add more media .. 
+//             ]
+//         }
+//     ],
+//     branches: [
+//         {
+//             title: "Globle branches",
+//             branche: [
+//                 { name: "iWebwiser", address: "Usa", status: "Active" },
+//                 { name: "Appwise", address: "Usa", status: "Active" },
+//                 { name: "NewWay", address: "Usa", status: "Active" },
+//                 { name: "iWebwiser", address: "Usa", status: "Active" },
+//                 // add more branche ....... 
+//             ]
+//         },
+//         {
+//             title: "India branches",
+//             branch: [
+//                 { name: "iWebwiser", address: "Usa", status: "Active" },
+//                 { name: "Appwise", address: "Usa", status: "Active" },
+//                 { name: "NewWay", address: "Usa", status: "Active" },
+//                 { name: "iWebwiser", address: "Usa", status: "Active" },
+//                 // add more branche ....... 
+//             ]
+//         }
+//         // add more braches ......... 
+//     ]
+// }
 

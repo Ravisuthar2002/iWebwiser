@@ -7,10 +7,13 @@ const Content = sequelize.define('Content', {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
     },
-    title: {
+    heading: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+    },
+    title: {
+        type: DataTypes.STRING,
+        allowNull: true,
     },
     subtitle: {
         type: DataTypes.STRING,
@@ -30,34 +33,48 @@ const Content = sequelize.define('Content', {
     },
     featuredMedia: {
         type: DataTypes.JSON,
-        allowNull: false,
-        defaultValue: '[]'
+        allowNull: true,
+        defaultValue: []
     },
     logos: {
         type: DataTypes.JSON,
-        allowNull: false,
-        defaultValue: '[]'
+        allowNull: true,
+        defaultValue: []
     },
     lists: {
         type: DataTypes.JSON,
+        allowNull: true,
+        defaultValue: []
+    },
+    navigationMenus: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        defaultValue: []
+    },
+    containerName: {
+        type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: '[]'
     },
     section: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    page: {
+    relative: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    weight: {
-        type: DataTypes.INTEGER,
+    page: {
+        type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "home"
     },
     position: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true,
+    },
+    index: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
     }
 }, {
     timestamps: true,

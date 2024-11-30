@@ -9,7 +9,7 @@ const Navbar = sequelize.define('Navbar', {
     },
     page: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false, 
     },
     section: {
         type: DataTypes.STRING,
@@ -17,26 +17,24 @@ const Navbar = sequelize.define('Navbar', {
     },
     logo: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true, 
     },
     href: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     label: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false, 
     },
     links: {
         type: DataTypes.JSON,
         allowNull: true,
-        defaultValue: "[]"
-    }
+        defaultValue: [] 
+    },
 }, {
-    timestamps: true,
-    paranoid: true
+    timestamps: true, 
+    paranoid: true 
 });
-
-
 
 module.exports = Navbar;

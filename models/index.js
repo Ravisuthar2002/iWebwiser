@@ -6,22 +6,28 @@ const db = {};
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-const Contant = require('./Content');
+db.Contant = require('./Content');
+db.Navbar = require('./Navbar');
+db.Navbarlink = require('./Navbarlinks');
+db.HeaderContent = require('./HeaderContent');
+db.Footer = require('./Footer');
 
-const Navbar = require('./Navbar');
-const HeaderContent = require('./HeaderContent');
-const Footer = require('./Footer');
+// db.Navbarlink.hasMany(db.Navbar, {
+//     foreignKey: 'linkId', 
+//     as: 'navbars'         
+//   });
+  
+//   db.Navbar.belongsTo(db.Navbarlink, {
+//     foreignKey: 'linkId',
+//     as: 'navbarlink'     
+//   });
 
-// Page.destroy({ truncate: true, cascade: true })
-
-
-
-
-module.exports = { Contant, Navbar, HeaderContent, Footer }
+db.Navbar.hasMany(db.Navbarlink, {  foreignKey: 'navbarId' });
+db.Navbarlink.belongsTo(db.Navbar, { foreignKey: 'navbarId'});
 
 
 db.sequelize.sync({ force: false })
-    .then(() => console.log('Database synced'))
-    .catch((err) => console.log('Error: ' + err));
+.then(() => console.log('Database synced'))
+.catch((err) => console.log('Error: ' + err));
 
 module.exports = db;

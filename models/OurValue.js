@@ -1,36 +1,25 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
-const HeaderContent = sequelize.define('HeaderContent', {
+// allowNull :  true (field not exists and without value that time insert data)
+// allowNull : false (field is requer with value that time inert data)
+const OurValues = sequelize.define('OurValues', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
     },
+    heading: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
     title: {
         type: DataTypes.STRING,
-        allowNull: false,
-    },
-    subtitle: {
-        type: DataTypes.STRING,
         allowNull: true,
-    },
-    navigationMenus: {
-        type: DataTypes.JSON,
-        allowNull: true,
-        defaultValue: []
-    },
-    logos: {
-        type: DataTypes.JSON,
-        allowNull: true,
-        defaultValue: []
-    },
-    text: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        unique: true
     },
     body: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
     },
     label: {
@@ -41,22 +30,37 @@ const HeaderContent = sequelize.define('HeaderContent', {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    featuredMedia: {
-        type: DataTypes.STRING,
+    ourValueLists: {
+        type: DataTypes.JSON,
+        allowNull: false,
+    },
+    cardWith: {
+        type: DataTypes.JSON,
         allowNull: true,
     },
+    containerName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     section: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    reletive: {
         type: DataTypes.STRING,
         allowNull: false,
     },
     page: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+    },
+    weight: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
 }, {
     timestamps: true,
     paranoid: true
 });
 
-module.exports = HeaderContent;
+module.exports = OurValues;
